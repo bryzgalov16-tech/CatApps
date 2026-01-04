@@ -24,11 +24,7 @@
             overflow-x: hidden; transition: background 0.3s ease;
         }
 
-        /* Анимация страниц */
-        .page {
-            display: none; width: 100%; max-width: 400px;
-            animation: fadeIn 0.3s ease;
-        }
+        .page { display: none; width: 100%; max-width: 400px; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
 
         @keyframes fadeIn {
@@ -37,13 +33,7 @@
         }
 
         header { text-align: center; margin-bottom: 24px; }
-        .logo { width: 60px; height: 60px; margin-bottom: 8px; }
-
-        /* Сетка 2x2 */
-        .grid {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 12px; width: 100%; margin-bottom: 20px;
-        }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; margin-bottom: 20px; }
 
         .card {
             background: var(--sec-bg); border-radius: 16px;
@@ -55,7 +45,6 @@
         .card:active { transform: scale(0.95); }
         .card i { font-size: 24px; margin-bottom: 8px; }
 
-        /* Нижний список */
         .list { width: 100%; display: flex; flex-direction: column; gap: 8px; }
         .list-item {
             background: var(--sec-bg); padding: 14px 16px;
@@ -63,14 +52,11 @@
             cursor: pointer; text-decoration: none; color: var(--text);
         }
 
-        /* Виджет теста */
         .test-widget {
             margin-top: 30px; width: 100%; background: var(--sec-bg);
             border-radius: 16px; padding: 16px; box-sizing: border-box;
             display: flex; justify-content: space-between; align-items: center;
         }
-
-        .status-dot { width: 10px; height: 10px; background: #4caf50; border-radius: 50%; display: inline-block; }
 
         .profile-img { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 12px; }
     </style>
@@ -92,7 +78,7 @@
 
         <div class="list">
             <div class="list-item" onclick="nav('instr')"><span>📖</span> Инструкция</div>
-            <div class="list-item" onclick="tg.openTelegramLink('https://t.me/ВАШ_НИК')"><span>✉️</span> Написать автору</div>
+            <div class="list-item" onclick="tg.openTelegramLink('https://t.me/bryzgalov16_tech')"><span>✉️</span> Написать автору</div>
             <div class="list-item" onclick="nav('donate')"><span>☕</span> Поддержать копейкой</div>
         </div>
 
@@ -108,10 +94,10 @@
     <div id="download" class="page">
         <h2>Скачать приложение</h2>
         <div class="grid">
-            <button class="card" onclick="window.open('https://google.com')"><i>🤖</i><span>Android</span></button>
-            <button class="card" onclick="window.open('https://apple.com')"><i>🍎</i><span>iOS</span></button>
-            <button class="card" onclick="window.open('https://google.com')"><i>🪟</i><span>Windows</span></button>
-            <button class="card" onclick="window.open('https://apple.com')"><i>💻</i><span>macOS</span></button>
+            <button class="card" onclick="tg.openLink('https://play.google.com/store/apps/details?id=com.v2raytun.android')"><i>🤖</i><span>Android</span></button>
+            <button class="card" onclick="tg.openLink('https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973')"><i>🍎</i><span>iOS</span></button>
+            <button class="card" onclick="tg.openLink('https://storage.v2raytun.com/v2RayTun_Setup.exe')"><i>🪟</i><span>Windows</span></button>
+            <button class="card" onclick="tg.openLink('https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973')"><i>💻</i><span>macOS</span></button>
         </div>
     </div>
 
@@ -128,7 +114,7 @@
         <img id="user-photo" class="profile-img" src="https://via.placeholder.com/80" alt="Avatar">
         <div style="font-size: 18px; font-weight: bold;" id="user-name">Загрузка...</div>
         <div style="color: var(--hint); margin-top: 8px;" id="user-id">ID: ---</div>
-        <div class="card" style="margin-top: 20px; width: auto;">
+        <div class="card" style="margin: 20px auto; width: auto;">
             <span>📅 С нами: 1 день</span>
         </div>
     </div>
@@ -138,7 +124,7 @@
     <div id="donate" class="page" style="text-align: center;">
         <h2>Поддержать проект</h2>
         <div style="font-size: 100px; margin: 20px;">⭐️</div>
-        <p>Тут будет картинка-заглушка или оплата Звездами.</p>
+        <p>Раздел будет доступен позже.</p>
     </div>
 
 <script>
@@ -146,22 +132,15 @@
     tg.ready();
     tg.expand();
 
-    // Навигация (SPA)
     function nav(pageId) {
-        tg.HapticFeedback.impactOccurred('light'); // Вибрация при клике
+        tg.HapticFeedback.impactOccurred('light');
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(pageId).classList.add('active');
-        
-        if (pageId !== 'home') {
-            tg.BackButton.show(); // Показ кнопки Назад
-        } else {
-            tg.BackButton.hide();
-        }
+        if (pageId !== 'home') tg.BackButton.show(); else tg.BackButton.hide();
     }
 
     tg.BackButton.onClick(() => nav('home'));
 
-    // Данные профиля
     const user = tg.initDataUnsafe?.user;
     if (user) {
         document.getElementById('user-name').innerText = user.first_name + (user.last_name ? ' ' + user.last_name : '');
@@ -169,7 +148,6 @@
         if (user.photo_url) document.getElementById('user-photo').src = user.photo_url;
     }
 
-    // Имитация Пинга
     function runPing() {
         tg.HapticFeedback.selectionChanged();
         const pingEl = document.getElementById('ping');
@@ -178,16 +156,15 @@
             const fakePing = Math.floor(Math.random() * 50) + 20;
             pingEl.innerText = '🇳🇱 Пинг: ' + fakePing + ' ms';
             tg.HapticFeedback.notificationOccurred('success');
-        }, 1500);
+        }, 800);
     }
     
-    // Deeplink импорт
     function importVpn(type) {
-        const url = "https://gist.githubusercontent.com/bryzgalov16-tech/e65d559af250502452f97db4f159e873/raw/general.txt";
-        const link = (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) 
-            ? "v2raytun://import/" + url 
-            : "happ://add/" + url;
-        window.location.href = link;
+        tg.HapticFeedback.notificationOccurred('success');
+        const url = (type === 'standard') 
+            ? "https://bryzgalov16-tech.github.io/CatVpnBase/" 
+            : "https://bryzgalov16-tech.github.io/CatVpnObhod/";
+        tg.openLink(url); // Используем стабильный метод открытия страниц-мостов
     }
 
     runPing();
