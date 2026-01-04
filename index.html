@@ -17,108 +17,222 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            background-color: var(--bg); color: var(--text); margin: 0; padding: 16px;
-            display: flex; flex-direction: column; align-items: center; overflow-x: hidden;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0; padding: 16px;
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden; transition: background 0.3s ease;
         }
 
-        .page { display: none; width: 100%; max-width: 400px; animation: fadeIn 0.2s ease; }
+        /* Анимация страниц */
+        .page {
+            display: none; width: 100%; max-width: 400px;
+            animation: fadeIn 0.2s ease;
+        }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
 
         header { text-align: center; margin-bottom: 24px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; margin-bottom: 20px; }
+
+        /* Сетка 2x2 */
+        .grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 12px; width: 100%; margin-bottom: 20px;
+        }
 
         .card {
-            background: var(--sec-bg); border-radius: 16px; padding: 18px 12px; text-align: center; border: none;
-            color: var(--text); cursor: pointer; transition: transform 0.1s;
+            background: var(--sec-bg); border-radius: 16px;
+            padding: 18px 12px; text-align: center; border: none;
+            color: var(--text); cursor: pointer;
+            transition: transform 0.1s;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             font-size: 14px; font-weight: 600;
         }
         .card:active { transform: scale(0.92); }
         .card i { font-size: 28px; margin-bottom: 8px; }
 
+        /* Нижний список */
         .list { width: 100%; display: flex; flex-direction: column; gap: 8px; }
         .list-item {
-            background: var(--sec-bg); padding: 14px 16px; border-radius: 14px;
-            display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 500;
+            background: var(--sec-bg); padding: 14px 16px;
+            border-radius: 14px; display: flex; align-items: center; gap: 12px;
+            cursor: pointer; text-decoration: none; color: var(--text);
+            font-weight: 500; transition: background 0.2s;
         }
         .list-item:active { background: var(--btn); color: var(--btn-text); }
 
+        /* Виджет теста */
         .test-widget {
-            margin-top: 30px; width: 100%; background: var(--sec-bg); border-radius: 18px; padding: 16px;
-            display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;
+            margin-top: 30px; width: 100%; background: var(--sec-bg);
+            border-radius: 18px; padding: 16px; box-sizing: border-box;
+            display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
         .profile-img { width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--btn); margin-bottom: 15px; }
+        
         h2 { font-size: 20px; margin-bottom: 20px; text-align: center; }
+        .btn-main { background: var(--btn); color: var(--btn-text); padding: 15px; border-radius: 12px; text-align: center; font-weight: bold; margin-top: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div id="home" class="page active">
-        <header><div style="font-size: 45px;">🐱</div><h1 style="margin: 0; font-size: 24px;">Cat-Connect 2.0</h1></header>
+        <header>
+            <div style="font-size: 45px;">🐱</div>
+            <h1 style="margin: 0; font-size: 24px;">Cat-Connect 2.0</h1>
+        </header>
+
         <div class="grid">
             <button class="card" onclick="nav('download')"><i>📥</i><span>Скачать</span></button>
             <button class="card" onclick="nav('servers')"><i>🌐</i><span>Серверы</span></button>
             <button class="card" onclick="nav('profile')"><i>👤</i><span>Профиль</span></button>
             <button class="card" onclick="nav('info')"><i>ℹ️</i><span>Инфо</span></button>
         </div>
+
         <div class="list">
             <div class="list-item" onclick="nav('instr')"><span>📖</span> Инструкция</div>
             <div class="list-item" onclick="contactAuthor()"><span>✉️</span> Написать автору</div>
             <div class="list-item" onclick="nav('donate')"><span>☕</span> Поддержать копейкой</div>
         </div>
+
         <div class="test-widget">
-            <div><span style="font-size: 13px; color: var(--hint); font-weight: bold; text-transform: uppercase;">ТЕСТ СОЕДИНЕНИЯ</span><br><span id="ping" style="font-size: 15px; font-weight: 600;">Загрузка...</span></div>
-            <div onclick="runPing()" style="cursor:pointer; font-size: 22px;">🔄</div>
+            <div>
+                <span style="font-size: 13px; color: var(--hint); font-weight: bold; text-transform: uppercase;">Тест соединения</span><br>
+                <span id="ping" style="font-size: 15px; font-weight: 600;">Определяем сеть...</span>
+            </div>
+            <div onclick="runPing()" style="cursor:pointer; font-size: 22px; background: var(--bg); padding: 8px; border-radius: 50%;">🔄</div>
         </div>
     </div>
 
     <div id="download" class="page">
-        <h2>Выберите устройство</h2>
+        <h2>Выберите ваше устройство</h2>
         <div class="grid">
-            <button class="card" onclick="openStore('https://play.google.com/store/apps/details?id=com.v2raytun.android')"><i>🤖</i><span>Android</span></button>
-            <button class="card" onclick="openStore('https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973')"><i>🍎</i><span>iOS</span></button>
-            <button class="card" onclick="openStore('https://storage.v2raytun.com/v2RayTun_Setup.exe')"><i>🪟</i><span>Windows</span></button>
-            <button class="card" onclick="openStore('https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973')"><i>💻</i><span>macOS</span></button>
+            <button class="card" onclick="openStore('android')"><i>🤖</i><span>Android</span></button>
+            <button class="card" onclick="openStore('ios')"><i>🍎</i><span>iOS</span></button>
+            <button class="card" onclick="openStore('win')"><i>🪟</i><span>Windows</span></button>
+            <button class="card" onclick="openStore('mac')"><i>💻</i><span>macOS</span></button>
         </div>
     </div>
 
     <div id="servers" class="page">
-        <h2>Список серверов</h2>
+        <h2>Доступные конфигурации</h2>
         <div class="list">
             <div class="list-item" onclick="importVpn('standard')"><span>🔹</span> VPN Стандарт</div>
             <div class="list-item" onclick="importVpn('bypass')"><span>🔸</span> Обход белых списков</div>
         </div>
+        <p style="text-align: center; color: var(--hint); font-size: 12px; margin-top: 20px;">Нажмите для автоматического импорта в приложение</p>
     </div>
 
     <div id="profile" class="page" style="text-align: center;">
         <h2>Мой профиль</h2>
         <img id="user-photo" class="profile-img" src="https://via.placeholder.com/85" alt="Avatar">
-        <div id="user-name" style="font-size: 20px; font-weight: 800;">Пользователь</div>
-        <div id="user-id" style="color: var(--hint); margin-top: 5px; font-family: monospace;">ID: ---</div>
-        <div class="card" style="margin: 25px auto; width: fit-content; background: var(--btn); color: var(--btn-text);"><span>С нами: 1 день</span></div>
+        <div style="font-size: 20px; font-weight: 800;" id="user-name">Пользователь</div>
+        <div style="color: var(--hint); margin-top: 5px; font-family: monospace;" id="user-id">ID: ---</div>
+        
+        <div class="card" style="margin-top: 25px; width: auto; background: var(--btn); color: var(--btn-text);">
+            <span id="days-counter">С нами: 1 день</span>
+        </div>
     </div>
 
-    <div id="info" class="page"><h2>Информация</h2><p style="text-align: center;">Раздел в разработке.</p></div>
-    <div id="instr" class="page"><h2>Инструкция</h2><p style="text-align: center;">Гайды появятся скоро.</p></div>
-    <div id="donate" class="page" style="text-align: center;"><h2>Поддержка</h2><p>Спасибо за помощь!</p></div>
+    <div id="info" class="page"><h2>Информация</h2><p style="text-align: center;">Раздел в разработке. Скоро здесь будет дисклеймер.</p></div>
+    <div id="instr" class="page"><h2>Инструкция</h2><p style="text-align: center;">Здесь появятся подробные гайды по настройке.</p></div>
+    <div id="donate" class="page" style="text-align: center;">
+        <h2>Поддержать проект</h2>
+        <div style="font-size: 80px; margin: 20px;">🐈☕</div>
+        <p>Ваша поддержка помогает серверу работать быстрее!</p>
+        <div class="btn-main" onclick="tg.showAlert('Раздел будет доступен позже!')">Сделать донат</div>
+    </div>
 
 <script>
-    // 1. Инициализация Telegram SDK
     const tg = window.Telegram.WebApp;
     tg.ready();
     tg.expand();
 
-    // 2. Ссылки на ваши страницы-мосты
-    const URLS = {
-        standard: "https://bryzgalov16-tech.github.io/CatVpnBase/",
-        bypass: "https://bryzgalov16-tech.github.io/CatVpnObhod/"
+    const LINKS = {
+        android: "https://play.google.com/store/apps/details?id=com.v2raytun.android",
+        ios: "https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973",
+        mac: "https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973",
+        win: "https://storage.v2raytun.com/v2RayTun_Setup.exe"
     };
 
-    // 3. Функция навигации с вибрацией
+    const SUB_STD = "https://gist.githubusercontent.com/bryzgalov16-tech/e65d559af250502452f97db4f159e873/raw/general.txt";
+
+    // 1. Навигация и тактильная отдача
     function nav(pageId) {
         tg.HapticFeedback.impactOccurred('light'); 
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(pageId).classList.add('active');
-        if (pageId !== 'home
+        
+        if (pageId !== 'home') {
+            tg.BackButton.show(); 
+        } else {
+            tg.BackButton.hide();
+        }
+    }
+
+    tg.BackButton.onClick(() => nav('home'));
+
+    function openStore(os) {
+        tg.HapticFeedback.impactOccurred('medium');
+        tg.openLink(LINKS[os]); //
+    }
+
+    function contactAuthor() {
+        tg.HapticFeedback.impactOccurred('medium');
+        tg.openTelegramLink('https://t.me/bryzgalov16_tech'); //
+    }
+
+    // 2. Импорт VPN
+    function importVpn(type) {
+        tg.HapticFeedback.notificationOccurred('success');
+        let sub = (type === 'standard') ? SUB_STD : ""; // Вторая ссылка пока пустая
+        if (!sub) return tg.showAlert("Эта ссылка еще не настроена!");
+
+        let link = (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) 
+            ? "v2raytun://import/" + sub 
+            : "happ://add/" + sub;
+        
+        window.location.href = link;
+    }
+
+    // 3. Тест IP и флагов
+    async function runPing() {
+        const pingEl = document.getElementById('ping');
+        pingEl.innerText = 'Замер...';
+        tg.HapticFeedback.selectionChanged();
+
+        try {
+            const res = await fetch('https://ipapi.co/json/');
+            const data = await res.json();
+            const flag = data.country_code ? getFlagEmoji(data.country_code) : '🌐';
+            pingEl.innerHTML = `${flag} ${data.ip} (${data.country_name})`;
+            tg.HapticFeedback.notificationOccurred('success');
+        } catch (e) {
+            pingEl.innerText = 'Ошибка замера';
+        }
+    }
+
+    function getFlagEmoji(countryCode) {
+        return countryCode.toUpperCase().replace(/./g, char => 
+            String.fromCodePoint(127397 + char.charCodeAt())
+        );
+    }
+
+    // 4. Инициализация профиля
+    const user = tg.initDataUnsafe?.user;
+    if (user) {
+        document.getElementById('user-name').innerText = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+        document.getElementById('user-id').innerText = 'ID: ' + user.id;
+        if (user.photo_url) document.getElementById('user-photo').src = user.photo_url;
+    }
+
+    // Запуск теста при входе
+    runPing();
+</script>
+</body>
+</html>
