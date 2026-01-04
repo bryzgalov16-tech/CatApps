@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -17,29 +18,20 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0; padding: 16px;
-            display: flex; flex-direction: column; align-items: center;
-            overflow-x: hidden; transition: background 0.3s ease;
+            background-color: var(--bg); color: var(--text); margin: 0; padding: 16px;
+            display: flex; flex-direction: column; align-items: center; overflow-x: hidden;
         }
 
         .page { display: none; width: 100%; max-width: 400px; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         header { text-align: center; margin-bottom: 24px; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; margin-bottom: 20px; }
 
         .card {
-            background: var(--sec-bg); border-radius: 16px;
-            padding: 16px; text-align: center; border: none;
-            color: var(--text); cursor: pointer;
-            transition: transform 0.1s;
+            background: var(--sec-bg); border-radius: 16px; padding: 16px; text-align: center; border: none;
+            color: var(--text); cursor: pointer; transition: transform 0.1s;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
         .card:active { transform: scale(0.95); }
@@ -47,15 +39,13 @@
 
         .list { width: 100%; display: flex; flex-direction: column; gap: 8px; }
         .list-item {
-            background: var(--sec-bg); padding: 14px 16px;
-            border-radius: 12px; display: flex; align-items: center; gap: 12px;
-            cursor: pointer; text-decoration: none; color: var(--text);
+            background: var(--sec-bg); padding: 14px 16px; border-radius: 12px;
+            display: flex; align-items: center; gap: 12px; cursor: pointer; color: var(--text);
         }
 
         .test-widget {
-            margin-top: 30px; width: 100%; background: var(--sec-bg);
-            border-radius: 16px; padding: 16px; box-sizing: border-box;
-            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 30px; width: 100%; background: var(--sec-bg); border-radius: 16px; padding: 16px;
+            display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;
         }
 
         .profile-img { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 12px; }
@@ -64,29 +54,20 @@
 <body>
 
     <div id="home" class="page active">
-        <header>
-            <div style="font-size: 40px;">🐱</div>
-            <h1 style="margin: 0; font-size: 22px;">Cat-Connect 2.0</h1>
-        </header>
-
+        <header><div style="font-size: 40px;">🐱</div><h1 style="margin: 0; font-size: 22px;">Cat-Connect 2.0</h1></header>
         <div class="grid">
             <button class="card" onclick="nav('download')"><i>📥</i><span>Скачать</span></button>
             <button class="card" onclick="nav('servers')"><i>🌐</i><span>Серверы</span></button>
             <button class="card" onclick="nav('profile')"><i>👤</i><span>Профиль</span></button>
             <button class="card" onclick="nav('info')"><i>ℹ️</i><span>Инфо</span></button>
         </div>
-
         <div class="list">
             <div class="list-item" onclick="nav('instr')"><span>📖</span> Инструкция</div>
             <div class="list-item" onclick="tg.openTelegramLink('https://t.me/bryzgalov16_tech')"><span>✉️</span> Написать автору</div>
             <div class="list-item" onclick="nav('donate')"><span>☕</span> Поддержать копейкой</div>
         </div>
-
         <div class="test-widget">
-            <div>
-                <span style="font-size: 14px; color: var(--hint);">Тест соединения</span><br>
-                <span id="ping">Пинг: замер...</span>
-            </div>
+            <div><span style="font-size: 14px; color: var(--hint);">Тест соединения</span><br><span id="ping">Пинг: замер...</span></div>
             <div onclick="runPing()" style="cursor:pointer; font-size: 20px;">🔄</div>
         </div>
     </div>
@@ -94,38 +75,32 @@
     <div id="download" class="page">
         <h2>Скачать приложение</h2>
         <div class="grid">
-            <button class="card" onclick="tg.openLink('https://play.google.com/store/apps/details?id=com.v2raytun.android')"><i>🤖</i><span>Android</span></button>
-            <button class="card" onclick="tg.openLink('https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973')"><i>🍎</i><span>iOS</span></button>
-            <button class="card" onclick="tg.openLink('https://storage.v2raytun.com/v2RayTun_Setup.exe')"><i>🪟</i><span>Windows</span></button>
-            <button class="card" onclick="tg.openLink('https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973')"><i>💻</i><span>macOS</span></button>
+            <button class="card" onclick="openExt('https://play.google.com/store/apps/details?id=com.v2raytun.android')"><i>🤖</i><span>Android</span></button>
+            <button class="card" onclick="openExt('https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973')"><i>🍎</i><span>iOS</span></button>
+            <button class="card" onclick="openExt('https://storage.v2raytun.com/v2RayTun_Setup.exe')"><i>🪟</i><span>Windows</span></button>
+            <button class="card" onclick="openExt('https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973')"><i>💻</i><span>macOS</span></button>
         </div>
     </div>
 
     <div id="servers" class="page">
         <h2>Выбор сервера</h2>
         <div class="list">
-            <div class="list-item" onclick="importVpn('standard')">🔹 VPN Стандарт</div>
-            <div class="list-item" onclick="importVpn('bypass')">🔸 Обход белых списков</div>
+            <div class="list-item" onclick="openExt('https://bryzgalov16-tech.github.io/CatVpnBase/')">🔹 VPN Стандарт</div>
+            <div class="list-item" onclick="openExt('https://bryzgalov16-tech.github.io/CatVpnObhod/')">🔸 Обход белых списков</div>
         </div>
     </div>
 
     <div id="profile" class="page" style="text-align: center;">
         <h2>Мой профиль</h2>
         <img id="user-photo" class="profile-img" src="https://via.placeholder.com/80" alt="Avatar">
-        <div style="font-size: 18px; font-weight: bold;" id="user-name">Загрузка...</div>
-        <div style="color: var(--hint); margin-top: 8px;" id="user-id">ID: ---</div>
-        <div class="card" style="margin: 20px auto; width: auto;">
-            <span>📅 С нами: 1 день</span>
-        </div>
+        <div id="user-name" style="font-size: 18px; font-weight: bold;">Загрузка...</div>
+        <div id="user-id" style="color: var(--hint); margin-top: 8px;">ID: ---</div>
+        <div class="card" style="margin: 20px auto; width: auto;"><span>📅 С нами: 1 день</span></div>
     </div>
 
-    <div id="info" class="page"><h2>Информация</h2><p>Тут будет дисклеймер.</p></div>
+    <div id="info" class="page"><h2>Информация</h2><p>Раздел в разработке.</p></div>
     <div id="instr" class="page"><h2>Инструкция</h2><p>Наполним позже.</p></div>
-    <div id="donate" class="page" style="text-align: center;">
-        <h2>Поддержать проект</h2>
-        <div style="font-size: 100px; margin: 20px;">⭐️</div>
-        <p>Раздел будет доступен позже.</p>
-    </div>
+    <div id="donate" class="page" style="text-align: center;"><h2>Поддержка</h2><p>Раздел будет доступен позже.</p></div>
 
 <script>
     const tg = window.Telegram.WebApp;
@@ -138,8 +113,14 @@
         document.getElementById(pageId).classList.add('active');
         if (pageId !== 'home') tg.BackButton.show(); else tg.BackButton.hide();
     }
-
     tg.BackButton.onClick(() => nav('home'));
+
+    // ЕДИНАЯ ФУНКЦИЯ ДЛЯ ВСЕХ ВНЕШНИХ ССЫЛОК
+    function openExt(url) {
+        tg.HapticFeedback.impactOccurred('medium');
+        // Используем ТОЛЬКО tg.openLink, чтобы избежать ERR_UNKNOWN_URL_SCHEME
+        tg.openLink(url);
+    }
 
     const user = tg.initDataUnsafe?.user;
     if (user) {
@@ -159,14 +140,6 @@
         }, 800);
     }
     
-    function importVpn(type) {
-        tg.HapticFeedback.notificationOccurred('success');
-        const url = (type === 'standard') 
-            ? "https://bryzgalov16-tech.github.io/CatVpnBase/" 
-            : "https://bryzgalov16-tech.github.io/CatVpnObhod/";
-        tg.openLink(url); // Используем стабильный метод открытия страниц-мостов
-    }
-
     runPing();
 </script>
 </body>
