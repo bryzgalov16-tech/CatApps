@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VPN Manager</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --tg-theme-bg-color: #fff;
+            --tg-theme-button-color: #2481cc;
+            --tg-theme-button-text-color: #fff;
+            --tg-theme-text-color: #000;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color);
+            color: var(--tg-theme-text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container { width: 100%; max-width: 400px; text-align: center; }
+        
+        h1 { font-size: 20px; margin-bottom: 24px; }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin: 12px 0;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: opacity 0.2s;
+            background-color: var(--tg-theme-button-color);
+            color: var(--tg-theme-button-text-color);
+        }
+
+        .btn:active { opacity: 0.7; }
+        
+        .secondary-btn {
+            background-color: transparent;
+            color: var(--tg-theme-button-color);
+            border: 1px solid var(--tg-theme-button-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 id="userGreeting">Загрузка...</h1>
+    
+    <a href="#" id="happBtn" class="btn">Импорт в Happ</a>
+    <a href="#" id="v2rayBtn" class="btn">Импорт в v2raytun</a>
+
+    <button onclick="copyLink()" class="btn secondary-btn">Копировать ссылку</button>
+</div>
+
+<script>
+    // 1. Инициализация Telegram
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+
+    // Приветствие пользователя из Telegram
+    const user = tg.initDataUnsafe?.user;
+    if (user) {
+        document.getElementById('userGreeting').innerText = `Привет, ${user.first_name}!`;
+    } else {
+        document.getElementById('userGreeting').innerText = `Подключение VPN`;
+    }
+
+    // 2. Данные подписки
+    const SUB_URL = "https://gist.githubusercontent.com/bryzgalov16-tech/e65d559af250502452f97db4f159e873/raw/general.txt#Cat_VPN_Main";
+
+    // 3. Настройка кнопок
+    document.getElementById('happBtn').href = "happ://add/" + SUB_URL;
+    document.getElementById('v2rayBtn').href = "v2raytun://import/" + SUB_URL;
+
+    function copyLink() {
+        navigator.clipboard.writeText(SUB_URL);
+        tg.showAlert("Ссылка скопирована!");
+    }
+
+    // Сообщаем о закрытии при нажатии (опционально)
+    document.querySelectorAll('.btn').forEach(b => {
+        b.addEventListener('click', () => {
+            if(!b.classList.contains('secondary-btn')) {
+                // Небольшая задержка, чтобы успел сработать диплинк
+                setTimeout(() => { tg.close(); }, 1000);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
