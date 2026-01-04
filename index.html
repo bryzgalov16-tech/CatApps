@@ -3,64 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cat VPN App</title>
+    <title>Cat-Connect 2.0</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; background-color: var(--tg-theme-bg-color); color: var(--tg-theme-text-color); margin: 0; padding: 20px; transition: all 0.3s; }
-        .page { display: none; } /* Скрываем все страницы по умолчанию */
-        .page.active { display: block; } /* Показываем только активную */
-        
-        .btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 10px; background: var(--tg-theme-button-color); color: var(--tg-theme-button-text-color); font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; }
-        .card { background: var(--tg-theme-secondary-bg-color); padding: 15px; border-radius: 12px; margin-bottom: 20px; }
+        :root {
+            --bg: var(--tg-theme-bg-color, #ffffff);
+            --text: var(--tg-theme-text-color, #000000);
+            --hint: var(--tg-theme-hint-color, #999999);
+            --btn: var(--tg-theme-button-color, #2481cc);
+            --btn-text: var(--tg-theme-button-text-color, #ffffff);
+            --sec-bg: var(--tg-theme-secondary-bg-color, #f0f0f0);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0; padding: 16px;
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden; transition: background 0.3s ease;
+        }
+
+        /* Анимация страниц */
+        .page {
+            display: none; width: 100%; max-width: 400px;
+            animation: fadeIn 0.3s ease;
+        }
+        .page.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header { text-align: center; margin-bottom: 24px; }
+        .logo { width: 60px; height: 60px; margin-bottom: 8px; }
+
+        /* Сетка 2x2 */
+        .grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 12px; width: 100%; margin-bottom: 20px;
+        }
+
+        .card {
+            background: var(--sec-bg); border-radius: 16px;
+            padding: 16px; text-align: center; border: none;
+            color: var(--text); cursor: pointer;
+            transition: transform 0.1s;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .card:active { transform: scale(0.95); }
+        .card i { font-size: 24px; margin-bottom: 8px; }
+
+        /* Нижний список */
+        .list { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+        .list-item {
+            background: var(--sec-bg); padding: 14px 16px;
+            border-radius: 12px; display: flex; align-items: center; gap: 12px;
+            cursor: pointer; text-decoration: none; color: var(--text);
+        }
+
+        /* Виджет теста */
+        .test-widget {
+            margin-top: 30px; width: 100%; background: var(--sec-bg);
+            border-radius: 16px; padding: 16px; box-sizing: border-box;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .status-dot { width: 10px; height: 10px; background: #4caf50; border-radius: 50%; display: inline-block; }
+
+        .profile-img { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 12px; }
     </style>
 </head>
 <body>
 
-    <div id="homePage" class="page active">
-        <h1>Cat VPN</h1>
-        <div class="card">
-            <p>Добро пожаловать! Выберите действие:</p>
+    <div id="home" class="page active">
+        <header>
+            <div style="font-size: 40px;">🐱</div>
+            <h1 style="margin: 0; font-size: 22px;">Cat-Connect 2.0</h1>
+        </header>
+
+        <div class="grid">
+            <button class="card" onclick="nav('download')"><i>📥</i><span>Скачать</span></button>
+            <button class="card" onclick="nav('servers')"><i>🌐</i><span>Серверы</span></button>
+            <button class="card" onclick="nav('profile')"><i>👤</i><span>Профиль</span></button>
+            <button class="card" onclick="nav('info')"><i>ℹ️</i><span>Инфо</span></button>
         </div>
-        <button class="btn" onclick="showPage('setupPage')">🚀 Настроить подключение</button>
-        <button class="btn" onclick="showPage('routingPage')">⚙️ Настройки роутинга</button>
+
+        <div class="list">
+            <div class="list-item" onclick="nav('instr')"><span>📖</span> Инструкция</div>
+            <div class="list-item" onclick="tg.openTelegramLink('https://t.me/ВАШ_НИК')"><span>✉️</span> Написать автору</div>
+            <div class="list-item" onclick="nav('donate')"><span>☕</span> Поддержать копейкой</div>
+        </div>
+
+        <div class="test-widget">
+            <div>
+                <span style="font-size: 14px; color: var(--hint);">Тест соединения</span><br>
+                <span id="ping">Пинг: замер...</span>
+            </div>
+            <div onclick="runPing()" style="cursor:pointer; font-size: 20px;">🔄</div>
+        </div>
     </div>
 
-    <div id="setupPage" class="page">
-        <h1>Подключение</h1>
-        <div class="card">Выберите ваше приложение для импорта подписки:</div>
-        <a href="happ://add/ВАША_ССЫЛКА" class="btn">Импорт в Happ</a>
-        <a href="v2raytun://import/ВАША_ССЫЛКА" class="btn">Импорт в v2raytun</a>
+    <div id="download" class="page">
+        <h2>Скачать приложение</h2>
+        <div class="grid">
+            <button class="card" onclick="window.open('https://google.com')"><i>🤖</i><span>Android</span></button>
+            <button class="card" onclick="window.open('https://apple.com')"><i>🍎</i><span>iOS</span></button>
+            <button class="card" onclick="window.open('https://google.com')"><i>🪟</i><span>Windows</span></button>
+            <button class="card" onclick="window.open('https://apple.com')"><i>💻</i><span>macOS</span></button>
+        </div>
     </div>
 
-    <div id="routingPage" class="page">
-        <h1>Роутинг (Happ)</h1>
-        <button class="btn" onclick="location.href='happ://routing/onadd/ВАШ_BASE64'">Включить правила</button>
-        <button class="btn" onclick="location.href='happ://routing/off'">Выключить правила</button>
+    <div id="servers" class="page">
+        <h2>Выбор сервера</h2>
+        <div class="list">
+            <div class="list-item" onclick="importVpn('standard')">🔹 VPN Стандарт</div>
+            <div class="list-item" onclick="importVpn('bypass')">🔸 Обход белых списков</div>
+        </div>
+    </div>
+
+    <div id="profile" class="page" style="text-align: center;">
+        <h2>Мой профиль</h2>
+        <img id="user-photo" class="profile-img" src="https://via.placeholder.com/80" alt="Avatar">
+        <div style="font-size: 18px; font-weight: bold;" id="user-name">Загрузка...</div>
+        <div style="color: var(--hint); margin-top: 8px;" id="user-id">ID: ---</div>
+        <div class="card" style="margin-top: 20px; width: auto;">
+            <span>📅 С нами: 1 день</span>
+        </div>
+    </div>
+
+    <div id="info" class="page"><h2>Информация</h2><p>Тут будет дисклеймер.</p></div>
+    <div id="instr" class="page"><h2>Инструкция</h2><p>Наполним позже.</p></div>
+    <div id="donate" class="page" style="text-align: center;">
+        <h2>Поддержать проект</h2>
+        <div style="font-size: 100px; margin: 20px;">⭐️</div>
+        <p>Тут будет картинка-заглушка или оплата Звездами.</p>
     </div>
 
 <script>
     const tg = window.Telegram.WebApp;
     tg.ready();
+    tg.expand();
 
-    // Функция переключения страниц
-    function showPage(pageId) {
-        // Скрываем все страницы
+    // Навигация (SPA)
+    function nav(pageId) {
+        tg.HapticFeedback.impactOccurred('light'); // Вибрация при клике
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        // Показываем нужную
         document.getElementById(pageId).classList.add('active');
-
-        // Если мы не на главной, показываем кнопку "Назад" в Telegram
-        if (pageId !== 'homePage') {
-            tg.BackButton.show();
+        
+        if (pageId !== 'home') {
+            tg.BackButton.show(); // Показ кнопки Назад
         } else {
             tg.BackButton.hide();
         }
     }
 
-    // Слушаем нажатие кнопки "Назад" в самом Telegram
-    tg.BackButton.onClick(() => {
-        showPage('homePage');
-    });
+    tg.BackButton.onClick(() => nav('home'));
+
+    // Данные профиля
+    const user = tg.initDataUnsafe?.user;
+    if (user) {
+        document.getElementById('user-name').innerText = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+        document.getElementById('user-id').innerText = 'ID: ' + user.id;
+        if (user.photo_url) document.getElementById('user-photo').src = user.photo_url;
+    }
+
+    // Имитация Пинга
+    function runPing() {
+        tg.HapticFeedback.selectionChanged();
+        const pingEl = document.getElementById('ping');
+        pingEl.innerText = 'Замер...';
+        setTimeout(() => {
+            const fakePing = Math.floor(Math.random() * 50) + 20;
+            pingEl.innerText = '🇳🇱 Пинг: ' + fakePing + ' ms';
+            tg.HapticFeedback.notificationOccurred('success');
+        }, 1500);
+    }
+    
+    // Deeplink импорт
+    function importVpn(type) {
+        const url = "https://gist.githubusercontent.com/bryzgalov16-tech/e65d559af250502452f97db4f159e873/raw/general.txt";
+        const link = (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) 
+            ? "v2raytun://import/" + url 
+            : "happ://add/" + url;
+        window.location.href = link;
+    }
+
+    runPing();
 </script>
 </body>
 </html>
