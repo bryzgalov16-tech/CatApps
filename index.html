@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -8,123 +7,186 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg: var(--tg-theme-bg-color, #ffffff);
-            --text: var(--tg-theme-text-color, #000000);
-            --hint: var(--tg-theme-hint-color, #999999);
-            --btn: var(--tg-theme-button-color, #2481cc);
-            --btn-text: var(--tg-theme-button-text-color, #ffffff);
-            --sec-bg: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            --bg-color: #0d0b14;
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --neon-purple: #bc13fe;
+            --neon-blue: #00d2ff;
+            --text-color: #ffffff;
+            --hint-color: rgba(255, 255, 255, 0.5);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            background-color: var(--bg); color: var(--text); margin: 0; padding: 16px;
-            display: flex; flex-direction: column; align-items: center; overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(188, 19, 254, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(0, 210, 255, 0.15) 0%, transparent 40%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow-x: hidden;
         }
 
-        .page { display: none; width: 100%; max-width: 400px; animation: fadeIn 0.3s ease; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Эффект стекла */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
 
-        header { text-align: center; margin-bottom: 24px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; margin-bottom: 20px; }
+        header { text-align: center; margin-bottom: 30px; animation: glowText 3s infinite alternate; }
+        
+        @keyframes glowText {
+            from { text-shadow: 0 0 5px rgba(188, 19, 254, 0.5); }
+            to { text-shadow: 0 0 15px rgba(188, 19, 254, 0.8), 0 0 20px rgba(0, 210, 255, 0.5); }
+        }
+
+        .page { display: none; width: 100%; max-width: 400px; animation: slideUp 0.4s ease-out; }
+        .page.active { display: block; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Сетка 2x2 */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
 
         .card {
-            background: var(--sec-bg); border-radius: 16px; padding: 16px; text-align: center; border: none;
-            color: var(--text); cursor: pointer; transition: transform 0.1s;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; text-align: center; cursor: pointer;
+            transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center;
         }
-        .card:active { transform: scale(0.95); }
-        .card i { font-size: 24px; margin-bottom: 8px; }
+        .card:active { transform: scale(0.92); border-color: var(--neon-purple); box-shadow: 0 0 15px var(--neon-purple); }
+        .card i { font-size: 32px; margin-bottom: 10px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+        .card span { font-size: 14px; font-weight: 600; letter-spacing: 0.5px; }
 
-        .list { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+        /* Списки */
+        .list { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
         .list-item {
-            background: var(--sec-bg); padding: 14px 16px; border-radius: 12px;
-            display: flex; align-items: center; gap: 12px; cursor: pointer; color: var(--text);
+            padding: 16px; display: flex; align-items: center; gap: 15px;
+            cursor: pointer; transition: all 0.2s;
         }
+        .list-item:active { background: rgba(188, 19, 254, 0.2); border-color: var(--neon-purple); }
 
+        /* Виджет теста */
         .test-widget {
-            margin-top: 30px; width: 100%; background: var(--sec-bg); border-radius: 16px; padding: 16px;
-            display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;
+            margin-top: auto; padding: 20px; width: 100%; box-sizing: border-box;
+            display: flex; justify-content: space-between; align-items: center;
+            border-left: 4px solid var(--neon-blue);
         }
 
-        .profile-img { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 12px; }
+        .profile-img { 
+            width: 90px; height: 90px; border-radius: 50%; 
+            border: 2px solid var(--neon-purple);
+            box-shadow: 0 0 15px var(--neon-purple);
+            margin-bottom: 15px;
+        }
+
+        h2 { font-size: 22px; text-transform: uppercase; letter-spacing: 2px; text-align: center; color: var(--neon-blue); }
+
+        .btn-refresh { font-size: 24px; color: var(--neon-blue); cursor: pointer; transition: transform 0.5s; }
+        .btn-refresh:active { transform: rotate(180deg); }
     </style>
 </head>
 <body>
 
     <div id="home" class="page active">
-        <header><div style="font-size: 40px;">🐱</div><h1 style="margin: 0; font-size: 22px;">Cat-Connect 2.0</h1></header>
+        <header>
+            <div style="font-size: 50px;">🐱</div>
+            <h1 style="margin: 0; font-size: 26px; letter-spacing: 1px;">CAT-CONNECT 2.0</h1>
+            <p style="color: var(--hint-color); font-size: 12px; margin-top: 5px;">PREMIUM VPN SYSTEM</p>
+        </header>
+
         <div class="grid">
-            <button class="card" onclick="nav('download')"><i>📥</i><span>Скачать</span></button>
-            <button class="card" onclick="nav('servers')"><i>🌐</i><span>Серверы</span></button>
-            <button class="card" onclick="nav('profile')"><i>👤</i><span>Профиль</span></button>
-            <button class="card" onclick="nav('info')"><i>ℹ️</i><span>Инфо</span></button>
+            <button class="card glass" onclick="nav('download')"><i>📥</i><span>СКАЧАТЬ</span></button>
+            <button class="card glass" onclick="nav('servers')"><i>🌐</i><span>СЕРВЕРЫ</span></button>
+            <button class="card glass" onclick="nav('profile')"><i>👤</i><span>ПРОФИЛЬ</span></button>
+            <button class="card glass" onclick="nav('info')"><i>ℹ️</i><span>ИНФО</span></button>
         </div>
+
         <div class="list">
-            <div class="list-item" onclick="nav('instr')"><span>📖</span> Инструкция</div>
-            <div class="list-item" onclick="tg.openTelegramLink('https://t.me/bryzgalov16_tech')"><span>✉️</span> Написать автору</div>
-            <div class="list-item" onclick="nav('donate')"><span>☕</span> Поддержать копейкой</div>
+            <div class="list-item glass" onclick="nav('instr')"><span>📖</span> Инструкция</div>
+            <div class="list-item glass" onclick="openExt('https://t.me/bryzgalov16_tech')"><span>✉️</span> Написать автору</div>
+            <div class="list-item glass" onclick="nav('donate')"><span>☕</span> Поддержать копейкой</div>
         </div>
-        <div class="test-widget">
-            <div><span style="font-size: 14px; color: var(--hint);">Тест соединения</span><br><span id="ping">Пинг: замер...</span></div>
-            <div onclick="runPing()" style="cursor:pointer; font-size: 20px;">🔄</div>
+
+        <div class="test-widget glass" style="margin-top: 30px;">
+            <div>
+                <span style="font-size: 11px; color: var(--hint-color); font-weight: bold; text-transform: uppercase;">Network Status</span><br>
+                <span id="ping" style="font-size: 15px; font-weight: bold; color: var(--neon-blue);">Замер...</span>
+            </div>
+            <div class="btn-refresh" onclick="runPing()">🔄</div>
         </div>
     </div>
 
     <div id="download" class="page">
-        <h2>Скачать приложение</h2>
+        <h2>Выберите платформу</h2>
         <div class="grid">
-            <button class="card" onclick="openExt('https://play.google.com/store/apps/details?id=com.v2raytun.android')"><i>🤖</i><span>Android</span></button>
-            <button class="card" onclick="openExt('https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973')"><i>🍎</i><span>iOS</span></button>
-            <button class="card" onclick="openExt('https://storage.v2raytun.com/v2RayTun_Setup.exe')"><i>🪟</i><span>Windows</span></button>
-            <button class="card" onclick="openExt('https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973')"><i>💻</i><span>macOS</span></button>
+            <button class="card glass" onclick="openExt('https://play.google.com/store/apps/details?id=com.v2raytun.android')"><i>🤖</i><span>Android</span></button>
+            <button class="card glass" onclick="openExt('https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973')"><i>🍎</i><span>iOS</span></button>
+            <button class="card glass" onclick="openExt('https://storage.v2raytun.com/v2RayTun_Setup.exe')"><i>🪟</i><span>Windows</span></button>
+            <button class="card glass" onclick="openExt('https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973')"><i>💻</i><span>macOS</span></button>
         </div>
     </div>
 
     <div id="servers" class="page">
-        <h2>Выбор сервера</h2>
+        <h2>Доступные узлы</h2>
         <div class="list">
-            <div class="list-item" onclick="openExt('https://bryzgalov16-tech.github.io/CatVpnBase/')">🔹 VPN Стандарт</div>
-            <div class="list-item" onclick="openExt('https://bryzgalov16-tech.github.io/CatVpnObhod/')">🔸 Обход белых списков</div>
+            <div class="list-item glass" onclick="openExt('https://bryzgalov16-tech.github.io/CatVpnBase/')">
+                <span style="color: var(--neon-blue);">🔹</span> VPN СТАНДАРТ
+            </div>
+            <div class="list-item glass" onclick="openExt('https://bryzgalov16-tech.github.io/CatVpnObhod/')">
+                <span style="color: var(--neon-purple);">🔸</span> ОБХОД СПИСКОВ
+            </div>
         </div>
     </div>
 
     <div id="profile" class="page" style="text-align: center;">
-        <h2>Мой профиль</h2>
-        <img id="user-photo" class="profile-img" src="https://via.placeholder.com/80" alt="Avatar">
-        <div id="user-name" style="font-size: 18px; font-weight: bold;">Загрузка...</div>
-        <div id="user-id" style="color: var(--hint); margin-top: 8px;">ID: ---</div>
-        <div class="card" style="margin: 20px auto; width: auto;"><span>📅 С нами: 1 день</span></div>
+        <h2>Ваш аккаунт</h2>
+        <img id="user-photo" class="profile-img" src="https://via.placeholder.com/90" alt="Avatar">
+        <div id="user-name" style="font-size: 22px; font-weight: 800; color: var(--neon-purple);">Загрузка...</div>
+        <div id="user-id" style="color: var(--hint-color); margin-top: 5px; font-family: monospace;">ID: 000000000</div>
+        <div class="glass" style="margin: 30px auto; padding: 15px; width: fit-content; border-color: var(--neon-blue);">
+            <span style="font-weight: bold;">📅 С нами: 1 день</span>
+        </div>
     </div>
 
-    <div id="info" class="page"><h2>Информация</h2><p>Раздел в разработке.</p></div>
-    <div id="instr" class="page"><h2>Инструкция</h2><p>Наполним позже.</p></div>
-    <div id="donate" class="page" style="text-align: center;"><h2>Поддержка</h2><p>Раздел будет доступен позже.</p></div>
+    <div id="info" class="page"><h2>Инфо</h2><p class="glass" style="padding:20px; text-align:center;">Система Cat-Connect работает в штатном режиме.</p></div>
+    <div id="instr" class="page"><h2>Гайд</h2><p class="glass" style="padding:20px; text-align:center;">Инструкции будут добавлены в следующем обновлении.</p></div>
+    <div id="donate" class="page" style="text-align: center;">
+        <h2>Support</h2>
+        <div style="font-size: 80px; margin: 20px; filter: drop-shadow(0 0 15px var(--neon-purple));">⭐️</div>
+        <p style="padding: 0 20px;">Поддержите проект Звездами Telegram.</p>
+    </div>
 
 <script>
     const tg = window.Telegram.WebApp;
     tg.ready();
     tg.expand();
+    tg.setHeaderColor('#0d0b14'); // Устанавливаем цвет шапки Telegram
 
     function nav(pageId) {
-        tg.HapticFeedback.impactOccurred('light');
+        tg.HapticFeedback.impactOccurred('medium');
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(pageId).classList.add('active');
         if (pageId !== 'home') tg.BackButton.show(); else tg.BackButton.hide();
     }
+
     tg.BackButton.onClick(() => nav('home'));
 
-    // ЕДИНАЯ ФУНКЦИЯ ДЛЯ ВСЕХ ВНЕШНИХ ССЫЛОК
     function openExt(url) {
-        tg.HapticFeedback.impactOccurred('medium');
-        // Используем ТОЛЬКО tg.openLink, чтобы избежать ERR_UNKNOWN_URL_SCHEME
+        tg.HapticFeedback.notificationOccurred('success');
         tg.openLink(url);
     }
 
     const user = tg.initDataUnsafe?.user;
     if (user) {
-        document.getElementById('user-name').innerText = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+        document.getElementById('user-name').innerText = user.first_name.toUpperCase();
         document.getElementById('user-id').innerText = 'ID: ' + user.id;
         if (user.photo_url) document.getElementById('user-photo').src = user.photo_url;
     }
@@ -132,12 +194,14 @@
     function runPing() {
         tg.HapticFeedback.selectionChanged();
         const pingEl = document.getElementById('ping');
-        pingEl.innerText = 'Замер...';
+        pingEl.style.color = 'var(--hint-color)';
+        pingEl.innerText = 'SCANNING...';
         setTimeout(() => {
-            const fakePing = Math.floor(Math.random() * 50) + 20;
-            pingEl.innerText = '🇳🇱 Пинг: ' + fakePing + ' ms';
+            const fakePing = Math.floor(Math.random() * 40) + 15;
+            pingEl.style.color = 'var(--neon-blue)';
+            pingEl.innerText = 'LATENCY: ' + fakePing + ' MS';
             tg.HapticFeedback.notificationOccurred('success');
-        }, 800);
+        }, 1000);
     }
     
     runPing();
