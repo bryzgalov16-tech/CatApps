@@ -20,8 +20,8 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             background-color: var(--bg-color);
             background-image: 
-                radial-gradient(circle at 10% 10%, rgba(188, 19, 254, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(0, 210, 255, 0.15) 0%, transparent 40%);
+                radial-gradient(circle at 15% 15%, rgba(188, 19, 254, 0.15) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(0, 210, 255, 0.15) 0%, transparent 45%);
             background-attachment: fixed;
             color: var(--text-color);
             margin: 0; padding: 20px;
@@ -35,20 +35,22 @@
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
         }
 
+        /* Темы для текста и иконок */
+        .blue-theme { color: var(--neon-blue) !important; text-shadow: 0 0 8px var(--neon-blue); }
+        .purple-theme { color: var(--neon-purple) !important; text-shadow: 0 0 8px var(--neon-purple); }
+
         header { text-align: center; margin-bottom: 30px; }
-        .cyber-logo-img {
-            width: 120px; height: 120px; margin-bottom: 15px;
-            border-radius: 50%;
-            border: 3px solid var(--neon-blue);
-            box-shadow: 0 0 20px var(--neon-blue), 0 0 40px var(--neon-purple);
-            object-fit: cover;
+        .cyber-logo {
+            width: 100px; height: 100px; margin-bottom: 15px;
+            color: var(--neon-blue);
+            filter: drop-shadow(0 0 10px var(--neon-blue)) drop-shadow(0 0 20px var(--neon-purple));
         }
         .cyber-title {
-            margin: 0; font-size: 30px; font-weight: 800; letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--neon-purple), 0 0 20px rgba(188, 19, 254, 0.4);
+            margin: 0; font-size: 28px; font-weight: 900; letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--neon-purple), 0 0 20px rgba(188, 19, 254, 0.3);
         }
 
         .page { display: none; width: 100%; max-width: 400px; animation: slideUp 0.4s ease-out; }
@@ -57,103 +59,107 @@
 
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
         .card {
-            padding: 20px 10px; text-align: center; cursor: pointer; border: 1px solid var(--glass-border);
+            padding: 22px 10px; text-align: center; cursor: pointer;
             transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center;
         }
-        .card:active { transform: scale(0.92); border-color: var(--neon-purple); box-shadow: 0 0 15px var(--neon-purple); }
-        .card span { font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 10px; }
+        .card:active { transform: scale(0.92); box-shadow: 0 0 20px var(--neon-purple); }
+        .card span { font-size: 11px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; margin-top: 12px; }
 
-        .card-icon { width: 36px; height: 36px; filter: drop-shadow(0 0 5px currentColor); }
-        .icon-purple { color: var(--neon-purple); }
-        .icon-blue { color: var(--neon-blue); }
+        .card-icon { width: 38px; height: 38px; filter: drop-shadow(0 0 5px currentColor); }
 
-        .list { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-        .list-item { padding: 16px; display: flex; align-items: center; gap: 15px; cursor: pointer; }
-        .list-item:active { background: rgba(188, 19, 254, 0.1); }
-        .list-icon { width: 24px; height: 24px; filter: drop-shadow(0 0 3px currentColor); }
+        .list { width: 100%; display: flex; flex-direction: column; gap: 12px; margin-top: 25px; }
+        .list-item { padding: 18px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.2s; }
+        .list-item span { font-weight: 700; font-size: 15px; }
+        .list-icon { width: 24px; height: 24px; filter: drop-shadow(0 0 5px currentColor); }
 
         .profile-img { 
-            width: 90px; height: 90px; border-radius: 50%; 
-            border: 2px solid var(--neon-purple); box-shadow: 0 0 15px var(--neon-purple);
-            margin-bottom: 15px;
+            width: 100px; height: 100px; border-radius: 50%; 
+            border: 2px solid var(--neon-blue); box-shadow: 0 0 20px var(--neon-blue);
+            margin: 0 auto 20px auto; display: block;
         }
         
-        h2 { font-size: 20px; text-transform: uppercase; letter-spacing: 2px; text-align: center; color: var(--neon-blue); margin-bottom: 20px;}
+        .info-box { padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .info-label { color: var(--hint-color); font-size: 12px; font-weight: bold; text-transform: uppercase; }
+        .info-value { font-family: monospace; font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
 
     <div id="home" class="page active">
         <header>
-            <img src="image_2.png" alt="Cyber Cat Logo" class="cyber-logo-img">
+            <svg class="cyber-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="M12 8v4l3 3"/>
+                <path d="M9 7l2 2 2-2"/>
+                <circle cx="9" cy="12" r="1" fill="currentColor"/><circle cx="15" cy="12" r="1" fill="currentColor"/>
+            </svg>
             <h1 class="cyber-title">CAT-CONNECT 2.0</h1>
         </header>
 
         <div class="grid">
             <button class="card glass" onclick="nav('download')">
-                <svg class="card-icon icon-blue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                <span>ПРИЛОЖЕНИЯ</span>
+                <svg class="card-icon blue-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span class="blue-theme">Приложения</span>
             </button>
             <button class="card glass" onclick="nav('servers')">
-                <svg class="card-icon icon-purple" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M13 8l-4 8h3l-1 4 7-9h-4l3-3z"/></svg>
-                <span style="color: var(--neon-purple); text-shadow: 0 0 8px var(--neon-purple);">ПОДКЛЮЧЕНИЕ</span>
+                <svg class="card-icon purple-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M13 8l-4 8h3l-1 4 7-9h-4l3-3z"/></svg>
+                <span class="purple-theme">Подключение</span>
             </button>
             <button class="card glass" onclick="nav('profile')">
-                <svg class="card-icon icon-blue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                <span>ПРОФИЛЬ</span>
+                <svg class="card-icon blue-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span class="blue-theme">Профиль</span>
             </button>
             <button class="card glass" onclick="nav('info')">
-                <svg class="card-icon icon-purple" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 4.9V17.1L12 22l-9-4.9V6.9Z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="12" y1="7" x2="12.01" y2="7"/></svg>
-                <span>О ПРОЕКТЕ</span>
+                <svg class="card-icon purple-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l9 4.9V17.1L12 22l-9-4.9V6.9Z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="12" y1="7" x2="12.01" y2="7"/></svg>
+                <span class="purple-theme">О проекте</span>
             </button>
         </div>
 
         <div class="list">
             <div class="list-item glass" onclick="nav('instr')">
-                <svg class="list-icon icon-blue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                <span>Инструкция</span>
+                <svg class="list-icon blue-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                <span class="blue-theme">Инструкция</span>
             </div>
             <div class="list-item glass" onclick="openExt('https://t.me/bryzgalov16_tech')">
-                <svg class="list-icon icon-purple" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                <span>Написать автору</span>
+                <svg class="list-icon purple-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <span class="purple-theme">Написать автору</span>
+            </div>
+            <div class="list-item glass" onclick="nav('donate')">
+                <svg class="list-icon purple-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <span class="purple-theme">Поддержать копейкой</span>
             </div>
         </div>
     </div>
 
     <div id="download" class="page">
-        <h2>Доступные клиенты</h2>
+        <h2 class="blue-theme" style="text-align:center;">Приложения</h2>
         <div class="grid">
-            <button class="card glass" onclick="openExt('https://play.google.com/store/apps/details?id=com.v2raytun.android')"><span>Android</span></button>
-            <button class="card glass" onclick="openExt('https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973')"><span>iOS</span></button>
-            <button class="card glass" onclick="openExt('https://storage.v2raytun.com/v2RayTun_Setup.exe')"><span>Windows</span></button>
-            <button class="card glass" onclick="openExt('https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973')"><span>macOS</span></button>
+            <button class="card glass" onclick="openExt('https://play.google.com/store/apps/details?id=com.v2raytun.android')"><span class="blue-theme">Android</span></button>
+            <button class="card glass" onclick="openExt('https://apps.apple.com/app/happ-proxy-utility-plus/id6746188973')"><span class="blue-theme">iOS</span></button>
+            <button class="card glass" onclick="openExt('https://storage.v2raytun.com/v2RayTun_Setup.exe')"><span class="blue-theme">Windows</span></button>
+            <button class="card glass" onclick="openExt('https://apps.apple.com/app/happ-proxy-utility-plus/id6746188973')"><span class="blue-theme">macOS</span></button>
         </div>
     </div>
 
     <div id="servers" class="page">
-        <h2>Выберите узел</h2>
+        <h2 class="purple-theme" style="text-align:center;">Выбор узла</h2>
         <div class="list">
-            <div class="list-item glass" onclick="openExt('https://bryzgalov16-tech.github.io/CatVpnBase/')">
-                <svg class="list-icon icon-blue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                <span>VPN СТАНДАРТ</span>
-            </div>
-            <div class="list-item glass" onclick="openExt('https://bryzgalov16-tech.github.io/CatVpnObhod/')">
-                <svg class="list-icon icon-purple" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
-                <span>ОБХОД СПИСКОВ</span>
-            </div>
+            <div class="list-item glass" onclick="openExt('https://bryzgalov16-tech.github.io/CatVpnBase/')"><span class="blue-theme">VPN СТАНДАРТ</span></div>
+            <div class="list-item glass" onclick="openExt('https://bryzgalov16-tech.github.io/CatVpnObhod/')"><span class="purple-theme">ОБХОД СПИСКОВ</span></div>
         </div>
     </div>
 
-    <div id="profile" class="page" style="text-align: center;">
-        <h2>Мой Аккаунт</h2>
-        <img id="user-photo" class="profile-img" src="https://via.placeholder.com/90" alt="Avatar">
-        <div id="user-name" style="font-size: 22px; font-weight: 800; color: var(--neon-purple);">USER</div>
-        <div id="user-id" style="color: var(--hint-color); margin-top: 5px; font-family: monospace;">ID: 000000000</div>
-        <div class="glass" style="margin: 30px auto; padding: 15px; width: fit-content;">📅 С НАМИ: 1 ДЕНЬ</div>
+    <div id="profile" class="page">
+        <h2 class="blue-theme" style="text-align:center;">Профиль</h2>
+        <img id="user-photo" class="profile-img" src="https://via.placeholder.com/100">
+        <div class="info-box glass"><span class="info-label">Имя</span><span id="user-name" class="blue-theme info-value">USER</span></div>
+        <div class="info-box glass"><span class="info-label">ID</span><span id="user-id" class="purple-theme info-value">0</span></div>
+        <div class="info-box glass"><span class="info-label">Статус</span><span class="blue-theme info-value">Active</span></div>
     </div>
 
-    <div id="info" class="page"><h2>О проекте</h2><p class="glass" style="padding: 20px; text-align: center;">Cat-Connect 2.0 — это защищенная сеть на базе современных протоколов шифрования.</p></div>
-    <div id="instr" class="page"><h2>Инструкции</h2><p class="glass" style="padding: 20px; text-align: center;">Раздел будет наполнен в ближайшее время.</p></div>
+    <div id="info" class="page"><h2 class="purple-theme" style="text-align:center;">О проекте</h2><p class="glass" style="padding: 20px; text-align: center;">Cat-Connect 2.0 — защищенный доступ в сеть с любовью к котикам. 🐱</p></div>
+    <div id="instr" class="page"><h2 class="blue-theme" style="text-align:center;">Инструкции</h2><p class="glass" style="padding: 20px; text-align: center;">1. Скачайте приложение.<br>2. Импортируйте конфиг.<br>3. Подключитесь!</p></div>
+    <div id="donate" class="page"><h2 class="purple-theme" style="text-align:center;">Поддержать</h2><div class="glass" style="padding: 30px; text-align: center;">Раздел в разработке.<br>Скоро здесь будут Stars! ⭐️</div></div>
 
 <script>
     const tg = window.Telegram.WebApp;
@@ -177,7 +183,7 @@
     const user = tg.initDataUnsafe?.user;
     if (user) {
         document.getElementById('user-name').innerText = user.first_name.toUpperCase();
-        document.getElementById('user-id').innerText = 'ID: ' + user.id;
+        document.getElementById('user-id').innerText = user.id;
         if (user.photo_url) document.getElementById('user-photo').src = user.photo_url;
     }
 </script>
